@@ -1,0 +1,5 @@
+<h1>Search Results: </h1>
+<h3><%= link_to "Back to All Requests", root_path %></h3>
+<%= render "search_form" %>
+<%= paginate @search_results %>
+<%= page_entries_info @search_results %>

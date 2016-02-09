@@ -1,0 +1,39 @@
+<h1>All Support Requests (<%= @support_requests.length %>)</h1>
+
+<h4>Search for a Request: </h4>
+<%= render "search_form" %>
+<hr>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Department</th>
+    <th>Message</th>
+    <th>Actions</th>
+  </tr>
+<% @support_requests.each do |rq| %>
+  <tr>
+    <td><%= rq.name %></td>
+    <td><%= rq.email %></td>
+    <td><%= rq.department %></td>
+    <td><%= rq.snippet %></td>
+    <td><%= link_to "Edit", edit_support_request_path(rq) %>
+          <%= link_to "Delete", support_request_path(rq), method: :delete,
+          data: { confirm: "Are you sure??" } %>
+          <% if rq.complete %>
+            <%= link_to("Complete",
+                 support_request_path(rq, "support_request[complete]" => false),
+                 method: :put, confirm: { data: "Mark as Complete?"}) %>
+          <% else %>
+          <%= link_to("Incomplete",
+               support_request_path(rq, "support_request[complete]" => true),
+               method: :put, confirm: { data: "Mark as Incomplete?"}) %>
+          <% end %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<%= paginate @support_requests %>
+<%= page_entries_info @support_requests %>

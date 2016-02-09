@@ -1,0 +1,45 @@
+<%= form_tag('/search', method: :post) do %>
+  <div>
+    <%= label_tag :search_term, "Enter search term..." %>
+    <%= text_field_tag :search_term %>
+    <%= submit_tag "Search!" %>
+  </div>
+  <hr>
+<% end %>
+
+<hr>
+
+<% if @search_results %>
+<table>
+  <caption><h2>Search Results for: "<%= @search_term %>"</h2></caption>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Department</th>
+    <th>Message</th>
+    <th>Actions</th>
+  </tr>
+  <% @search_results.each do |result|  %>
+  <tr>
+    <td><%= result.name %></td>
+    <td><%= result.email %></td>
+    <td><%= result.department %></td>
+    <td><%= result.snippet %></td>
+    <td><%= link_to "Edit", edit_support_request_path(result) %>
+          <%= link_to "Delete", support_request_path(result), method: :delete,
+          data: { confirm: "Are you sure??" } %>
+            <% if result.complete %>
+              <%= link_to("Complete",
+                   support_request_path(result, "support_request[complete]" => false),
+                   method: :put, confirm: { data: "Mark as Complete?"}) %>
+            <% else %>
+            <%= link_to("Incomplete",
+                 support_request_path(result, "support_request[complete]" => true),
+                 method: :put, confirm: { data: "Mark as Incomplete?"}) %>
+            <% end %>
+    </td>
+
+  </tr>
+  <% end %>
+</table>
+<% end %>

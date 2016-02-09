@@ -7,8 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div>
+    <h5><%= flash[:notice] || flash[:alert] %></h5>
+  </div>
+<%= link_to "List All Requests", support_requests_path %> |||||
+<%= link_to "Submit a New Request", new_support_request_path %>
 
 <%= yield %>
-
 </body>
 </html>
