@@ -4,8 +4,11 @@ class SupportRequestsController < ApplicationController
   def index
     # @support_requests = SupportRequest.order("created_at ASC")
     @support_requests = SupportRequest.order("complete ASC").page(params[:page]).per(7)
+#Write a SQL query that returns a sorted list of the departments and the number of support requests per each department
+# ...not quite...
+    # @sorted_requests = SupportRequest.order("department ASC").group(:department).count
   end
-# : Write a SQL query that returns a sorted list of the departments and the number of support requests per each department
+
   def new
     @support_request = SupportRequest.new
   end
@@ -31,6 +34,7 @@ class SupportRequestsController < ApplicationController
     # if @support_request.update_attribute(:complete, support_request_params[:complete])
         # redirect_to support_requests_path
     if @support_request.update(support_request_params)
+      # redirect to index instead of individual page
       redirect_to support_requests_path, notice: "Updated!"
       # redirect_to support_request_path(@support_request)
     else
