@@ -19,15 +19,18 @@
     <td><%= rq.department %></td>
     <td><%= rq.snippet %></td>
     <td><%= link_to "Edit", edit_support_request_path(rq) %>
+
           <%= link_to "Delete", support_request_path(rq), method: :delete,
           data: { confirm: "Are you sure??" } %>
+
           <% if rq.complete %>
             <%= link_to("Complete",
-                 support_request_path(rq, "support_request[complete]" => false),
+                 support_request_path(rq, support_request: { complete: false }),
+                 #[complete]" => false),
                  method: :put, confirm: { data: "Mark as Complete?"}) %>
           <% else %>
           <%= link_to("Incomplete",
-               support_request_path(rq, "support_request[complete]" => true),
+               support_request_path(rq, support_request: { complete: true }),
                method: :put, confirm: { data: "Mark as Incomplete?"}) %>
           <% end %>
     </td>

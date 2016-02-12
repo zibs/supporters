@@ -1,6 +1,7 @@
 class SupportRequestsController < ApplicationController
   before_action :find_support_request, only: [:show, :edit, :update, :destroy]
 
+
   def index
     # @support_requests = SupportRequest.order("created_at ASC")
     @support_requests = SupportRequest.order("complete ASC").page(params[:page]).per(7)
@@ -34,9 +35,10 @@ class SupportRequestsController < ApplicationController
     # if @support_request.update_attribute(:complete, support_request_params[:complete])
         # redirect_to support_requests_path
     if @support_request.update(support_request_params)
+      # could have checked params, or http request by checking params[:done]
+      redirect_to update_success_direction(support_request_params, @support_request), notice: "Support updated"
+          # redirect_to support_requests_path, notice: "Updated!"
       # redirect to index instead of individual page
-      redirect_to support_requests_path, notice: "Updated!"
-      # redirect_to support_request_path(@support_request)
     else
       flash[:alert] = "Support Request not updated -- Please check errors below"
       render :edit
@@ -55,6 +57,7 @@ class SupportRequestsController < ApplicationController
     end
   end
 
+
         private
 
         def support_request_params
@@ -63,6 +66,14 @@ class SupportRequestsController < ApplicationController
 
         def find_support_request
           @support_request = SupportRequest.find(params[:id])
+        end
+
+        def update_success_direction(params, support_request)
+          if support_request_params.has_key?(:complete)
+            support_requests_path
+          else
+            support_request_path(@support_request)
+          end
         end
 
 end
